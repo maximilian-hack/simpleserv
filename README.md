@@ -17,7 +17,7 @@ You can access these files by navigating to `http://localhost:8080/[filename]` a
 
 Example:
 ```
-http://localhost:8080/test.html
+http://<yourhostname>:8080/test.html
 ```
 
 ## `/trace` Endpoint
@@ -26,20 +26,48 @@ The `/trace` endpoint returns various connection details, including the client's
 
 Access the trace endpoint via:
 ```
-http://localhost:8080/trace
+http://<yourhostname>:8080/trace
 ```
 
 ## Running the Server
 
+1. Pull the image:
+    ```bash
+    docker pull ghcr.io/maximilian-hack/simpleserv:main
+    ```
+    
+2. Run the image:
+   ```bash
+    docker run -d --rm -p 8080:8080 ghcr.io/maximilian-hack/simpleserv:main
+    ```
+   
+
+<details>
+<summary>Or build the image locally (eg. for arm64)</summary>
+    
 1. Build the Docker image:
     ```bash
-    docker build -t content-server .
+    docker build -t simpleserv .
     ```
 
 2. Run the Docker container:
     ```bash
-    docker run -p 8080:8080 content-server
+    docker run -d --rm -p 8080:8080 simpleserv
     ```
+    
+</details>
+
+<details>
+    
+<summary>About the flags used</summary>
+
+`-d`: do not attach/show logs
+
+`--rm`: auto remove container when stopped
+
+`-p 8080:8080`: map host port on container port; `[hostport]:8080`
+
+</details>
 
 Once running, the server will host the files from the `/files` folder on port `8080`.
 
@@ -49,8 +77,10 @@ To serve your own files, you can map a folder on your local machine to the `/fil
 
 Example:
 ```bash
-docker run -p 8080:8080 -v /path/to/your/files:/usr/src/app/files content-server
+docker run -p 8080:8080 -v /path/to/your/files:/usr/src/app/files ghcr.io/maximilian-hack/simpleserv:main
 ```
 
 Replace `/path/to/your/files` with the path to the directory on your machine containing the files you wish to host. All files in that directory will be accessible from the server.
 
+---
+©2024 Maximilian Hack
